@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1119">
+  <title>Pixora — Photo sharing</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Pixora home"><span class="brand-mark">◉</span> Pixora</a>
+    <label class="search"><span>⌕</span><input id="globalSearch" placeholder="Search photos, users, tags..." aria-label="Search"></label>
+    <div class="top-actions"><button class="icon-btn" title="Explore" data-view="explore">◎</button><button class="icon-btn" id="notificationsBtn" title="Notifications">♧<i class="dot"></i></button><button class="avatar-mini" id="topAvatar" title="Profile">X</button></div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <nav class="nav-main">
+        <button class="nav-item active" data-view="home"><span>⌂</span> Home</button>
+        <button class="nav-item" data-view="explore"><span>◎</span> Explore</button>
+        <button class="nav-item" data-view="upload"><span>＋</span> Create post</button>
+        <button class="nav-item" data-view="archive"><span>▦</span> Archive</button>
+        <button class="nav-item" data-view="profile"><span>♙</span> Profile</button>
+        <button class="nav-item" data-view="saved"><span>▱</span> Saved</button>
+        <button class="nav-item" data-view="settings"><span>⚙</span> Settings</button>
+      </nav>
+      <div class="side-divider"></div>
+      <p class="side-label">DISCOVER</p>
+      <div class="tag-list">
+        <button data-tag="Nature">🌿 Nature</button><button data-tag="City">🏙 City</button>
+        <button data-tag="Travel">✈ Travel</button><button data-tag="Animals">🐾 Animals</button>
+        <button data-tag="Food">🍜 Food</button><button data-tag="Photography">📷 Photography</button>
+      </div>
+      <div class="sidebar-note"><span>✦</span><b>Your photo space</b><small>Collect moments. Share stories.</small></div>
+    </aside>
+
+    <main id="mainContent" class="main-content">
+      <section class="view" id="view-home">
+        <div class="composer card">
+          <div class="profile-bubble">X</div>
+          <button class="composer-prompt" data-view="upload">Share your photos or a moment...</button>
+          <div class="composer-actions"><button data-view="upload">▧ Photo</button><button data-view="upload">＃ Add tags</button><button class="primary small" data-view="upload">Create post</button></div>
+        </div>
+        <div class="stories card">
+          <div class="story create-story" data-view="upload"><span class="plus-circle">＋</span><small>Create story</small></div>
+          <div class="story"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&q=80" alt=""><small>luna.photo</small></div>
+          <div class="story"><img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=300&q=80" alt=""><small>minhtrang</small></div>
+          <div class="story"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=300&q=80" alt=""><small>ducanh</small></div>
+          <div class="story"><img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&q=80" alt=""><small>hoang2407</small></div>
+        </div>
+        <div class="feed-header"><h2>Latest posts</h2><select id="feedSort" aria-label="Sort posts"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="likes">Most liked</option></select></div>
+        <div id="feedList" class="feed-list"></div>
+      </section>
+
+      <section class="view hidden" id="view-explore">
+        <div class="page-heading"><div><h1>Explore</h1><p>Discover moments from the community.</p></div></div>
+        <div class="filter-row"><button class="filter-chip active" data-filter="All">All</button><button class="filter-chip" data-filter="Nature">Nature</button><button class="filter-chip" data-filter="Travel">Travel</button><button class="filter-chip" data-filter="Food">Food</button><button class="filter-chip" data-filter="Animals">Animals</button><button class="filter-chip" data-filter="City">City</button></div>
+        <div id="exploreGrid" class="photo-grid"></div>
+      </section>
+
+      <section class="view hidden" id="view-upload">
+        <div class="page-heading"><div><h1>Create post</h1><p>Share a photo and customize how your post appears.</p></div></div>
+        <form id="uploadForm" class="card upload-form">
+          <label class="dropzone" for="photoInput"><span class="upload-cloud">⇧</span><b>Choose photos to upload</b><small>JPG, PNG, GIF or WebP · You can select multiple images</small><span class="primary">Choose files</span></label>
+          <input id="photoInput" type="file" accept="image/*" multiple hidden>
+          <div id="selectedPreview" class="selected-preview"></div>
+          <label class="field-label" for="captionInput">Caption</label>
+          <textarea id="captionInput" maxlength="500" placeholder="Write something about your photos..." rows="3"></textarea>
+          <div class="form-meta"><span>Add a few words or hashtags to tell your story.</span><span id="captionCount">0/500</span></div>
+          <div class="two-fields">
+            <label><span class="field-label">Topic</span><select id="topicInput"><option>Photography</option><option>Nature</option><option>Travel</option><option>City</option><option>Animals</option><option>Food</option></select></label>
+            <label><span class="field-label">Post date</span><input id="postDateInput" type="date"></label>
+          </div>
+          <div class="section-subhead"><div><h3>Engagement display</h3><p>Set the numbers shown on this post preview.</p></div><span class="soft-badge">Preview settings</span></div>
+          <div class="metric-settings">
+            <div class="metric-control"><div class="metric-name"><span>♡</span><div><b>Likes</b><small>Displayed like count</small></div></div><div class="stepper"><button type="button" data-step="likes" data-delta="-100">−</button><input id="likesInput" type="number" min="0" max="999999999" value="1200"><button type="button" data-step="likes" data-delta="100">+</button></div></div>
+            <div class="metric-control"><div class="metric-name"><span>◉</span><div><b>Views</b><small>Displayed view count</small></div></div><div class="stepper"><button type="button" data-step="views" data-delta="-100">−</button><input id="viewsInput" type="number" min="0" max="999999999" value="8500"><button type="button" data-step="views" data-delta="100">+</button></div></div>
+          </div>
+          <div class="settings-row"><div><b>Show likes</b><small>Display likes on your post card</small></div><label class="switch"><input id="showLikesInput" type="checkbox" checked><span></span></label></div>
+          <div class="settings-row"><div><b>Show views</b><small>Display views on your post card</small></div><label class="switch"><input id="showViewsInput" type="checkbox" checked><span></span></label></div>
+          <div class="settings-row"><div><b>Visibility</b><small>Who can see this post</small></div><select id="visibilityInput"><option>Public</option><option>Followers</option><option>Only me</option></select></div>
+          <div class="settings-row"><div><b>Save to archive</b><small>Find this post later by year and month</small></div><label class="switch"><input id="archiveInput" type="checkbox" checked><span></span></label></div>
+          <div class="form-actions"><button type="button" class="secondary" id="clearUpload">Clear</button><button class="primary" type="submit">Publish post ↗</button></div>
+        </form>
+      </section>
+
+      <section class="view hidden" id="view-archive">
+        <div class="page-heading"><div><h1>Archive</h1><p>Find older posts by year, month, or date.</p></div></div>
+        <div class="card archive-toolbar"><label><span class="field-label">Year</span><select id="archiveYear"></select></label><label><span class="field-label">Month</span><select id="archiveMonth"><option value="all">All months</option><option value="0">January</option><option value="1">February</option><option value="2">March</option><option value="3">April</option><option value="4">May</option><option value="5">June</option><option value="6">July</option><option value="7">August</option><option value="8">September</option><option value="9">October</option><option value="10">November</option><option value="11">December</option></select></label><label><span class="field-label">Search caption</span><input id="archiveSearch" placeholder="Try 'mountain'..."></label></div>
+        <div class="archive-summary" id="archiveSummary"></div><div id="archiveGrid" class="photo-grid"></div>
+      </section>
+
+      <section class="view hidden" id="view-profile">
+        <div id="profileHeader" class="card profile-header"></div><div class="feed-header"><h2>Your posts</h2><span class="muted" id="profileCount"></span></div><div id="profileGrid" class="photo-grid"></div>
+      </section>
+
+      <section class="view hidden" id="view-saved">
+        <div class="page-heading"><div><h1>Saved posts</h1><p>Your bookmarked moments in one place.</p></div></div><div id="savedGrid" class="photo-grid"></div>
+      </section>
+
+      <section class="view hidden" id="view-settings">
+        <div class="page-heading"><div><h1>Settings</h1><p>Make Pixora feel right for you.</p></div></div>
+        <div class="card settings-card">
+          <h3>Appearance</h3><div class="settings-row"><div><b>Accent color</b><small>Choose your interface highlight</small></div><select id="accentSelect"><option value="blue">Ocean blue</option><option value="purple">Violet</option><option value="green">Emerald</option></select></div>
+          <div class="settings-row"><div><b>Compact feed</b><small>Reduce spacing between posts</small></div><label class="switch"><input id="compactToggle" type="checkbox"><span></span></label></div>
+          <h3>Data</h3><div class="settings-row"><div><b>Export your posts</b><small>Download a JSON backup of your posts and settings.</small></div><button id="exportBtn" class="secondary">Export JSON</button></div><div class="settings-row"><div><b>Reset demo data</b><small>Restore the sample posts. Your uploaded posts will be removed.</small></div><button id="resetBtn" class="danger">Reset</button></div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="rightbar">
+      <div class="card mini-profile"><div class="mini-profile-top"><div class="profile-bubble large">X</div><div><b>xanh tick <span class="verified">✓</span></b><small>@xanh_tick</small></div></div><div class="profile-stats"><div><b id="statPosts">3</b><small>Posts</small></div><div><b>4.8K</b><small>Followers</small></div><div><b>320</b><small>Following</small></div></div><button class="secondary full" data-view="profile">View profile</button></div>
+      <div class="card trends"><div class="card-title"><h3>Trending photos</h3><button class="text-btn" data-view="explore">See all</button></div><div class="trend-item"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=160&q=80" alt=""><div><b>Mountain escape</b><small>#nature · 12.4K views</small></div></div><div class="trend-item"><img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=160&q=80" alt=""><div><b>City lights</b><small>#city · 9.8K views</small></div></div><div class="trend-item"><img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=160&q=80" alt=""><div><b>Little friend</b><small>#animals · 8.1K views</small></div></div></div>
+      <div class="card archive-promo"><span class="promo-icon">▦</span><h3>Memories, organized</h3><p>Use Archive to revisit posts from any year.</p><button class="primary full" data-view="archive">Open archive</button></div>
+    </aside>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <button class="active" data-view="home"><span>⌂</span><small>Home</small></button>
+    <button data-view="explore"><span>◎</span><small>Explore</small></button>
+    <button class="mobile-create" data-view="upload" aria-label="Create post">＋</button>
+    <button data-view="archive"><span>▦</span><small>Archive</small></button>
+    <button data-view="profile"><span>♙</span><small>Profile</small></button>
+  </nav>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
