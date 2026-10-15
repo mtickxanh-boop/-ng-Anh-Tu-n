@@ -1,22 +1,44 @@
-# Pixora — Dark Photo Sharing UI
+# ImgHub Cloud — bilingual photo-sharing website
 
-A responsive, browser-only photo-sharing website demo built with HTML, CSS, and vanilla JavaScript.
+Includes:
+- English/Vietnamese language switch
+- Supabase Auth (email/password)
+- Shared cloud database and public gallery
+- Upload images to shared Supabase Storage
+- Post title, description, category, tags, author display name, visibility, album and chosen display date (including past dates)
+- Edit/delete own posts; public visitors can view public posts
+- Responsive dark UI
 
-## Run it
-1. Unzip the project.
-2. Open `index.html` in a modern browser. For best results, use a simple local server:
-   - VS Code: install Live Server, right-click `index.html`, choose **Open with Live Server**.
-   - Or run `python -m http.server 8000` from this folder and visit `http://localhost:8000`.
+## Important
+This is a starter project, not yet connected to your domain or cloud account. You must configure Supabase and deploy the files. Do not put a Supabase `service_role` secret in `index.html`. The browser uses only the project's publishable/anon key; access is protected by Row Level Security policies in `schema.sql`.
 
-## Included
-- Responsive desktop and mobile layouts.
-- Home feed, Explore, Profile, Saved posts, Settings, and Archive filters by year/month.
-- Multi-image upload, image previews, caption, topic, date, visibility, and archive option.
-- Per-post display settings for likes and views, including toggles to show/hide each metric.
-- Like/save actions, demo comment, copy-to-clipboard share, delete post.
-- Local browser persistence with `localStorage`, plus JSON export/reset.
+## 1. Create the shared backend
+1. Create a project at https://supabase.com/
+2. Open SQL Editor, paste all of `schema.sql`, and run it.
+3. In Project Settings > API (or Connect), copy the Project URL and publishable/anon key.
+4. Open `index.html` and replace:
+   - `YOUR_SUPABASE_PROJECT_URL`
+   - `YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY`
+5. In Supabase Authentication settings, configure your Site URL and Redirect URLs for your final domain, e.g. `https://yourdomain.com` and `https://www.yourdomain.com`.
+6. For email/password signup, configure email confirmation settings and SMTP as appropriate. Test signup and sign-in.
 
-## Important limitations
-This is a front-end demo, not a hosted social network. Posts and uploaded images are saved only in the current browser/device. It does not include real accounts, server-side image storage, live comments, real analytics, or cross-device sync. The editable likes/views are **display values for your own demo posts**, not actual engagement from a social platform. Sample photos are loaded from Unsplash and require an internet connection. Browser storage has limits; this demo caps selected upload size to help prevent storage failures.
+## 2. Deploy and connect your existing domain
+Recommended: Cloudflare Pages, Netlify, or Vercel static hosting.
+- Upload/deploy `index.html` as the site entry point. Keep `schema.sql` private or outside the public web root after setup.
+- Add your domain in the hosting provider's Domains section.
+- Follow the provider's exact DNS instructions at your domain registrar. DNS values differ by provider; do not guess them.
+- Enable HTTPS/SSL in the host and wait for DNS propagation.
+- Add both apex and `www` domain URLs to Supabase Auth URL configuration if you use both.
 
-For a production website, add a backend (for example, Supabase or Firebase), authentication, database policies, object storage, moderation, and deployment.
+## 3. Test before announcing
+- Open the domain in a private/incognito window and confirm public posts display.
+- Create two separate user accounts and verify each can edit/delete only their own posts.
+- Verify uploads work and past display dates render as selected.
+- Confirm backups and account email settings.
+- Set storage quotas, abuse controls, moderation/reporting, rate limits and privacy policy before a large public launch.
+
+## Current limitations to plan for
+- This starter does not yet include admin/moderation dashboard, comments, likes, reporting, password reset UI, social login, image deletion from Storage on post deletion, rate limiting, or automated content moderation.
+- Public images are publicly viewable by URL. The `private` post visibility restricts database row visibility, but files are stored in a public bucket for this starter; therefore private image URLs are not truly private. For genuine private images, use a private bucket and signed URLs before production.
+- Date field is a user-chosen display date; actual `created_at` remains server-generated.
+- Supabase free/paid quotas and hosting limits apply. Large traffic may require a paid plan.
